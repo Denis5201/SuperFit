@@ -48,4 +48,15 @@ class ParametersRepositoryImpl @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
+    override fun getProfile(): Flow<Result<String>> = flow {
+        try {
+            val profile = api.getProfile()
+
+            emit(Result.success(profile.login))
+        } catch (e: Exception) {
+            Log.e("OPS getProfile", e.message.toString())
+            emit(Result.failure(e))
+        }
+    }.flowOn(Dispatchers.IO)
+
 }

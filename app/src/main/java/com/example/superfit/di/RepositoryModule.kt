@@ -1,10 +1,12 @@
 package com.example.superfit.di
 
 import com.example.superfit.data.repository.AuthRepositoryImpl
+import com.example.superfit.data.repository.LocalSettingsImpl
 import com.example.superfit.data.repository.ParametersRepositoryImpl
 import com.example.superfit.data.repository.PhotoRepositoryImpl
 import com.example.superfit.data.repository.TrainingRepositoryImpl
 import com.example.superfit.domain.repository.AuthRepository
+import com.example.superfit.domain.repository.LocalSettings
 import com.example.superfit.domain.repository.ParametersRepository
 import com.example.superfit.domain.repository.PhotoRepository
 import com.example.superfit.domain.repository.TrainingRepository
@@ -37,4 +39,8 @@ abstract class RepositoryModule {
     abstract fun bindTrainingRepository(
         trainingRepositoryImpl: TrainingRepositoryImpl
     ): TrainingRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindLocalSettings(localSettingsImpl: LocalSettingsImpl): LocalSettings
 }

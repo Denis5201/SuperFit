@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">SuperFit</string>
+    <string name="user_name">UserName</string>
+    <string name="email">Email</string>
+    <string name="code">Code</string>
+    <string name="repeat_code">RepeatCode</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="error">Error</string>
+    <string name="ok">OK</string>
+    <string name="wrong_length_code">Code must be 4 digits length!</string>
+    <string name="code_with_zero">The code cannot contain 0</string>
+    <string name="wrong_email_format">Wrong email format!</string>
+    <string name="code_not_equal_with_repeat">Code and RepeatCode fields are not equal!</string>
+    <string name="empty_input">There are empty fields!</string>
 </resources>

@@ -10,4 +10,6 @@ interface ParametersRepository {
     fun getLastUserParams(): Flow<Result<UserParameters?>>
 
     fun getUserParamsHistory(): Flow<Result<List<UserParameters>>>
+
+    fun getProfile(): Flow<Result<String>>
 }
