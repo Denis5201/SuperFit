@@ -60,11 +60,9 @@ class SignUpViewModel @Inject constructor(
 
     private fun isValidInputCode(code: String): Boolean {
         if (code.length > 4) {
-            showError(MessageSource.WRONG_LENGTH_CODE)
             return false
         }
         if (code.isNotEmpty() && code.last() == '0') {
-            showError(MessageSource.CODE_CONTAIN_ZERO)
             return false
         }
         return true
