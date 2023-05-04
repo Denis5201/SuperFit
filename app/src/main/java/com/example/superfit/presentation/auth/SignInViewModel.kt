@@ -68,6 +68,7 @@ class SignInViewModel @Inject constructor(
                 if (password.length >= 4) {
                     signIn()
                     _uiState.value = SignInUiState.Loading
+                    return
                 }
                 _uiState.value = SignInUiState.ShowPasswordInput
             }

@@ -1,5 +1,6 @@
 package com.example.superfit.presentation.auth.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -35,6 +36,10 @@ fun PasswordInput(
     userName: String,
     getEvent: (SignInEvent) -> Unit
 ) {
+    BackHandler {
+        getEvent(SignInEvent.BackToInputLogin)
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()

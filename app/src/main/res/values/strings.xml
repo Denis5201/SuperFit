@@ -13,4 +13,15 @@
     <string name="wrong_email_format">Wrong email format!</string>
     <string name="code_not_equal_with_repeat">Code and RepeatCode fields are not equal!</string>
     <string name="empty_input">There are empty fields!</string>
+    <string name="push_ups_desc">Push-ups exercise the pectoral muscles, triceps, and anterior deltoids.</string>
+    <string name="plank_desc">The plank \nstrengthens the abdominals, back and shoulders.</string>
+    <string name="squats_desc">Сonsidered a vital exercise for increasing the strength and size of the lower body.</string>
+    <string name="crunch_desc">It involves the entire abs, but primarily it works the rectus abdominis muscle.</string>
+    <string name="running_desc">It develops endurance, strengthens the legs and the cardiovascular system.</string>
+    <string name="my_body">My body</string>
+    <string name="exercises">Exercises</string>
+    <string name="last_exercises">Last exercises</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="see_all">See all</string>
+    <string name="details">Details</string>
 </resources>

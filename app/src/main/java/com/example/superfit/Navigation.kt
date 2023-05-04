@@ -9,7 +9,13 @@ import com.example.superfit.presentation.auth.SignInScreen
 import com.example.superfit.presentation.auth.SignInViewModel
 import com.example.superfit.presentation.auth.SignUpScreen
 import com.example.superfit.presentation.auth.SignUpViewModel
+import com.example.superfit.presentation.body.BodyScreen
+import com.example.superfit.presentation.graphics.ProgressScreen
+import com.example.superfit.presentation.graphics.StatisticsScreen
+import com.example.superfit.presentation.images.ImagesScreen
 import com.example.superfit.presentation.main.MainScreen
+import com.example.superfit.presentation.main.MainViewModel
+import com.example.superfit.presentation.training.TrainingScreen
 
 @Composable
 fun Navigation() {
@@ -26,7 +32,23 @@ fun Navigation() {
             SignUpScreen(navController, viewModel)
         }
         composable(Screen.MainScreen.route) {
-            MainScreen()
+            val viewModel = hiltViewModel<MainViewModel>()
+            MainScreen(navController, viewModel)
+        }
+        composable(Screen.BodyScreen.route) {
+            BodyScreen(navController)
+        }
+        composable(Screen.TrainingScreen.route) {
+            TrainingScreen(navController)
+        }
+        composable(Screen.ProgressScreen.route) {
+            ProgressScreen(navController)
+        }
+        composable(Screen.StatisticsScreen.route) {
+            StatisticsScreen(navController)
+        }
+        composable(Screen.ImagesScreen.route) {
+            ImagesScreen(navController)
         }
     }
 }
