@@ -46,6 +46,7 @@ class SignInViewModel @Inject constructor(
         if (isFirstRunAppUseCase()) {
             viewModelScope.launch {
                 _action.send(SignInAction.NavigateToSignUp)
+                _uiState.value = SignInUiState.ShowLoginInput("")
             }
         } else {
             isTokenValid()

@@ -72,6 +72,7 @@ fun ExerciseCard(
         Column(
             modifier = Modifier
                 .weight(1f)
+                .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
                 .padding(start = 16.dp, end = 16.dp)
         ) {
@@ -130,6 +131,7 @@ fun BodyCard(
         Column(
             modifier = Modifier
                 .weight(1f)
+                .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
                 .padding(start = 16.dp, end = 16.dp)
         ) {
