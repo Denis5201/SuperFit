@@ -30,8 +30,8 @@ import com.example.superfit.presentation.main.models.MainEvent
 
 @Composable
 fun Main(
-    weight: Int?,
-    height: Int?,
+    weight: String?,
+    height: String?,
     lastExercises: Pair<TrainingType?, TrainingType?>,
     getEvent: (MainEvent) -> Unit
 ) {

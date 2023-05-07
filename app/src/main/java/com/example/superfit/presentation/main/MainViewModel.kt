@@ -33,8 +33,8 @@ class MainViewModel @Inject constructor(
     private val _action = Channel<MainAction?>()
     val action = _action.receiveAsFlow()
 
-    private var weight: Int? = null
-    private var height: Int? = null
+    private var weight: String? = null
+    private var height: String? = null
     private var lastExercises: Pair<TrainingType?, TrainingType?> = Pair(null, null)
 
     init {
@@ -45,7 +45,9 @@ class MainViewModel @Inject constructor(
     fun getEvent(event: MainEvent) {
         when(event) {
             MainEvent.NavigateToBody -> viewModelScope.launch {
-                _action.send(MainAction.NavigateToBody)
+                val weightParam = weight ?: UNDEFINED
+                val heightParam = height ?: UNDEFINED
+                _action.send(MainAction.NavigateToBody("/$weightParam/$heightParam"))
             }
             MainEvent.ShowAllExercises -> {
                 _uiState.value = MainUiState.ShowAllExercises
@@ -70,8 +72,8 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             getLastUserParametersUseCase().collect { result ->
                 result.onSuccess {
-                    weight = it?.weight
-                    height = it?.height
+                    weight = it?.weight?.toString()
+                    height = it?.height?.toString()
                     _uiState.value = MainUiState.ShowMain(weight, height, lastExercises)
                 }.onFailure {
                     _action.send(MainAction.ShowError(it.message ?: MessageSource.ERROR))
@@ -91,5 +93,9 @@ class MainViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private companion object {
+        const val UNDEFINED = "Undefined"
     }
 }

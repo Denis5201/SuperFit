@@ -54,6 +54,12 @@ val Typography = Typography(
         fontSize = 24.sp,
         lineHeight = 29.sp
     ),
+    labelLarge = TextStyle(
+        fontFamily = Montserrat,
+        fontWeight = FontWeight.W400,
+        fontSize = 20.sp,
+        lineHeight = 24.sp
+    ),
     labelMedium = TextStyle(
         fontFamily = Montserrat,
         fontWeight = FontWeight.W700,

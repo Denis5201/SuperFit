@@ -9,7 +9,6 @@ import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -35,7 +34,7 @@ fun MainScreen(
 ) {
 
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-    val action by viewModel.action.collectAsStateWithLifecycle(null)
+    val action = viewModel.action.collectAsStateWithLifecycle(null)
 
     Box(
         modifier = Modifier
@@ -71,16 +70,16 @@ fun MainScreen(
         }
     }
 
-    if (action is MainAction.ShowError) {
-        ErrorDialog(message = (action as MainAction.ShowError).message) {
+    if (action.value is MainAction.ShowError) {
+        ErrorDialog(message = (action.value as MainAction.ShowError).message) {
             viewModel.getEvent(MainEvent.ErrorShowed)
         }
     }
 
-    LaunchedEffect(key1 = action) {
-        when (action) {
-            MainAction.NavigateToBody -> {
-                navController.navigate(Screen.BodyScreen.route)
+    LaunchedEffect(key1 = action.value) {
+        when (val actionValue = action.value) {
+            is MainAction.NavigateToBody -> {
+                navController.navigate("${Screen.BodyScreen.route}${actionValue.params}")
             }
             is MainAction.NavigateToTraining -> {
                 navController.navigate(Screen.TrainingScreen.route)

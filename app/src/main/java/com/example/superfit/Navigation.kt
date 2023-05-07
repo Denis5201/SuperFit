@@ -2,14 +2,17 @@ package com.example.superfit
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.superfit.presentation.auth.SignInScreen
 import com.example.superfit.presentation.auth.SignInViewModel
 import com.example.superfit.presentation.auth.SignUpScreen
 import com.example.superfit.presentation.auth.SignUpViewModel
 import com.example.superfit.presentation.body.BodyScreen
+import com.example.superfit.presentation.body.BodyViewModel
 import com.example.superfit.presentation.graphics.ProgressScreen
 import com.example.superfit.presentation.graphics.StatisticsScreen
 import com.example.superfit.presentation.images.ImagesScreen
@@ -35,8 +38,15 @@ fun Navigation() {
             val viewModel = hiltViewModel<MainViewModel>()
             MainScreen(navController, viewModel)
         }
-        composable(Screen.BodyScreen.route) {
-            BodyScreen(navController)
+        composable(
+            route = "${Screen.BodyScreen.route}/{${Constants.WEIGHT}}/{${Constants.HEIGHT}}",
+            arguments = listOf(
+                navArgument(Constants.WEIGHT) { type = NavType.StringType },
+                navArgument(Constants.HEIGHT) { type = NavType.StringType }
+            )
+        ) {
+            val viewModel = hiltViewModel<BodyViewModel>()
+            BodyScreen(navController, viewModel)
         }
         composable(Screen.TrainingScreen.route) {
             TrainingScreen(navController)

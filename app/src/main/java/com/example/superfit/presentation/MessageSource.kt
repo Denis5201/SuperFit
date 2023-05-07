@@ -19,6 +19,7 @@ class MessageSource @Inject constructor(
             CODE_NOT_EQUAL_WITH_REPEAT -> resources.getString(R.string.code_not_equal_with_repeat)
             WRONG_LENGTH_CODE -> resources.getString(R.string.wrong_length_code)
             CODE_CONTAIN_ZERO -> resources.getString(R.string.code_with_zero)
+            WRONG_PARAM_VALUE -> resources.getString(R.string.wrong_param_value)
             else -> ERROR
         }
     }
@@ -30,5 +31,6 @@ class MessageSource @Inject constructor(
         const val CODE_NOT_EQUAL_WITH_REPEAT = 2
         const val WRONG_LENGTH_CODE = 3
         const val CODE_CONTAIN_ZERO = 4
+        const val WRONG_PARAM_VALUE = 5
     }
 }

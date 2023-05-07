@@ -29,7 +29,6 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import com.example.superfit.Constants
 import com.example.superfit.R
 import com.example.superfit.domain.model.TrainingType
 import com.example.superfit.presentation.main.models.MainEvent
@@ -96,8 +95,8 @@ fun ExerciseCard(
 
 @Composable
 fun BodyCard(
-    weight: Int?,
-    height: Int?,
+    weight: String?,
+    height: String?,
     getEvent: (MainEvent) -> Unit
 ) {
     Row(
@@ -144,7 +143,11 @@ fun BodyCard(
                 )
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
-                    text = weight?.toString() ?: Constants.UNDEFINED,
+                    text = if (weight.isNullOrEmpty()) {
+                        stringResource(R.string.undefined)
+                    } else {
+                        stringResource(R.string.weight_value, weight)
+                    },
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onPrimary
                 )
@@ -159,7 +162,11 @@ fun BodyCard(
                 )
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
-                    text = height?.toString() ?: Constants.UNDEFINED,
+                    text = if (height.isNullOrEmpty()) {
+                        stringResource(R.string.undefined)
+                    } else {
+                        stringResource(R.string.height_value, height)
+                    },
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onPrimary
                 )
