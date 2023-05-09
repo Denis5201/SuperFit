@@ -1,6 +1,7 @@
 package com.example.superfit.presentation.body.models
 
 import android.graphics.Bitmap
+import android.net.Uri
 
 sealed class BodyEvent {
 
@@ -9,6 +10,8 @@ sealed class BodyEvent {
     data class NewHeightValue(val value: String, val save: Boolean = false) : BodyEvent()
 
     data class NewPhoto(val image: Bitmap) : BodyEvent()
+
+    data class PhotoFromCamera(val uri: Uri) : BodyEvent()
 
     data class OpenChangingParamsDialog(val whose: Int) : BodyEvent()
 

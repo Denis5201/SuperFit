@@ -3,6 +3,7 @@ package com.example.superfit.data.repository
 import android.util.Log
 import com.example.superfit.data.api.PhotoApi
 import com.example.superfit.domain.model.UserPhoto
+import com.example.superfit.domain.model.UserPhotoBytes
 import com.example.superfit.domain.repository.PhotoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +21,7 @@ class PhotoRepositoryImpl @Inject constructor(
 
     override fun getUserPhotoList(): Flow<Result<List<UserPhoto>>> = flow {
         try {
-            val photoList = api.getPhotoList().map { it.toUserPhoto() }
+            val photoList = api.getPhotoList().map { it.toUserPhoto() }.sortedBy { it.uploaded }
 
             emit(Result.success(photoList))
         } catch (e: Exception) {
@@ -68,6 +69,34 @@ class PhotoRepositoryImpl @Inject constructor(
             emit(Result.success(Unit))
         } catch (e: Exception) {
             Log.e("OPS deletePhoto", e.message.toString())
+            emit(Result.failure(e))
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override fun getAllPhoto(): Flow<Result<List<UserPhotoBytes>>> = flow {
+        try {
+            val photoInfoList = api.getPhotoList().map { it.toUserPhoto() }.sortedBy { it.uploaded }
+
+
+            val imageList = photoInfoList.map { photoInfo ->
+                val inputStream = api.getPhoto(photoInfo.id).byteStream()
+
+                val baos = ByteArrayOutputStream()
+                inputStream.use {input ->
+                    baos.use {
+                        input.copyTo(it)
+                    }
+                }
+                UserPhotoBytes(
+                    id = photoInfo.id,
+                    image = baos.toByteArray(),
+                    date = photoInfo.uploaded
+                )
+            }
+
+            emit(Result.success(imageList))
+        } catch (e: Exception) {
+            Log.e("OPS getAllPhoto", e.message.toString())
             emit(Result.failure(e))
         }
     }.flowOn(Dispatchers.IO)

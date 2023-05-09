@@ -1,5 +1,10 @@
 package com.example.superfit.presentation.body.ui
 
+import android.graphics.Bitmap
+import android.graphics.Matrix
+import android.provider.MediaStore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -23,12 +27,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.exifinterface.media.ExifInterface
 import com.example.superfit.R
+import com.example.superfit.presentation.body.BodyViewModel
 import com.example.superfit.presentation.body.models.BodyEvent
 import com.example.superfit.presentation.body.models.BodyUiState
+import java.io.File
 
 @Composable
 fun UserPhotoProgress(
@@ -62,22 +71,7 @@ fun UserPhotoProgress(
             .height(250.dp),
     ) {
         if (uiState.userPhotoProgress.first == null) {
-            Box(
-                modifier = Modifier
-                    .padding(start = 16.dp, top = 16.dp)
-                    .size(110.dp)
-                    .background(MaterialTheme.colorScheme.onPrimary, CircleShape)
-                    .clickable { getEvent(BodyEvent.OpenPhotoDialog) },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.add_image),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(80.dp),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
+            BigIconAddImage(getEvent = getEvent)
         } else {
             Box(modifier = Modifier
                 .fillMaxHeight()
@@ -85,14 +79,16 @@ fun UserPhotoProgress(
                 Image(
                     bitmap = uiState.userPhotoProgress.first!!.bitmap.asImageBitmap(),
                     contentDescription = null,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.FillWidth
                 )
                 Text(
-                    text = uiState.userPhotoProgress.first!!.date.toString(),
+                    text = uiState.userPhotoProgress.first!!.date.format(BodyViewModel.DATE_FORMAT),
                     modifier = Modifier
+                        .padding(start = 8.dp, bottom = 8.dp)
                         .height(24.dp)
-                        .padding(start = 8.dp)
                         .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp))
+                        .padding(horizontal = 12.dp, vertical = 4.dp)
                         .align(Alignment.BottomStart),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onPrimary
@@ -100,38 +96,27 @@ fun UserPhotoProgress(
             }
         }
 
+        Spacer(modifier = Modifier.padding(2.dp))
+
         if (uiState.userPhotoProgress.second == null && uiState.userPhotoProgress.first != null) {
-            Box(
-                modifier = Modifier
-                    .padding(start = 16.dp, top = 16.dp)
-                    .size(110.dp)
-                    .background(MaterialTheme.colorScheme.onPrimary, CircleShape)
-                    .clickable { getEvent(BodyEvent.OpenPhotoDialog) },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.add_image),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(80.dp),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
+            BigIconAddImage(getEvent = getEvent)
         } else if (uiState.userPhotoProgress.second != null) {
             Box(modifier = Modifier
                 .fillMaxHeight()
-                .fillMaxWidth(0.48f)) {
+                .fillMaxWidth()) {
                 Image(
                     bitmap = uiState.userPhotoProgress.second!!.bitmap.asImageBitmap(),
                     contentDescription = null,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.FillWidth
                 )
                 Text(
-                    text = uiState.userPhotoProgress.second!!.date.toString(),
+                    text = uiState.userPhotoProgress.second!!.date.format(BodyViewModel.DATE_FORMAT),
                     modifier = Modifier
+                        .padding(start = 8.dp, bottom = 4.dp)
                         .height(24.dp)
-                        .padding(start = 8.dp)
                         .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp))
+                        .padding(horizontal = 12.dp, vertical = 4.dp)
                         .align(Alignment.BottomStart),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onPrimary
@@ -140,13 +125,76 @@ fun UserPhotoProgress(
                     imageVector = ImageVector.vectorResource(R.drawable.add_image),
                     contentDescription = null,
                     modifier = Modifier
-                        .padding(end = 8.dp)
+                        .padding(end = 8.dp, bottom = 4.dp)
                         .background(MaterialTheme.colorScheme.onPrimary, CircleShape)
+                        .padding(4.dp)
                         .align(Alignment.BottomEnd)
                         .clickable { getEvent(BodyEvent.OpenPhotoDialog) },
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
+    }
+
+    val context = LocalContext.current
+    val getGalleryImage = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) {
+        if (it != null) {
+            val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, it)
+            getEvent(BodyEvent.NewPhoto(bitmap))
+        }
+    }
+    val getCameraImage = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) {
+        if (it) {
+            val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uiState.uri)
+
+            val file = File("${context.cacheDir.absolutePath}/${uiState.uri.pathSegments.last()}")
+            val exif = ExifInterface(file)
+            val adjustedBitmap = normalizeRotationImage(bitmap, exif)
+
+            file.delete()
+            getEvent(BodyEvent.NewPhoto(adjustedBitmap))
+        }
+    }
+    val permission = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) {
+        if (it) {
+            val myUri = createTempFileAndGetUri(context)
+            getEvent(BodyEvent.PhotoFromCamera(myUri))
+            getCameraImage.launch(myUri)
+        }
+    }
+
+    if (uiState.choosingImage) {
+        NewPhotoDialog(
+            galleryLauncher = getGalleryImage,
+            cameraLauncher = getCameraImage,
+            permissionLauncher = permission,
+            getEvent = getEvent
+        )
+    }
+
+}
+
+private fun normalizeRotationImage(image: Bitmap, exif: ExifInterface): Bitmap {
+    val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+    val rotationInDegrees = exifToDegrees(rotation)
+    val matrix = Matrix()
+    if (rotation != 0) {
+        matrix.preRotate(rotationInDegrees.toFloat())
+    }
+    return Bitmap.createBitmap(image, 0, 0, image.width, image.height, matrix, true)
+}
+
+private fun exifToDegrees(exifOrientation: Int): Int {
+    return when (exifOrientation) {
+        ExifInterface.ORIENTATION_ROTATE_90 -> 90
+        ExifInterface.ORIENTATION_ROTATE_180 -> 180
+        ExifInterface.ORIENTATION_ROTATE_270 -> 270
+        else -> 0
     }
 }

@@ -4,7 +4,7 @@ import com.example.superfit.domain.model.UserPhoto
 import kotlinx.serialization.Serializable
 import java.time.Instant
 import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.time.ZoneId
 
 @Serializable
 data class ProfilePhoto(
@@ -14,7 +14,9 @@ data class ProfilePhoto(
     fun toUserPhoto(): UserPhoto {
         return UserPhoto(
             id = id,
-            uploaded = LocalDateTime.ofInstant(Instant.ofEpochSecond(uploaded), ZoneOffset.UTC).toLocalDate()
+            uploaded = LocalDateTime.ofInstant(
+                Instant.ofEpochSecond(uploaded), ZoneId.systemDefault()
+            ).toLocalDate()
         )
     }
 }
