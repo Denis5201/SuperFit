@@ -8,7 +8,7 @@ sealed class ImagesEvent {
 
     object NavigateBack : ImagesEvent()
 
-    object BackToImageList: ImagesEvent()
+    object BackToImageList : ImagesEvent()
 
     data class OpenDeleteDialog(val galleryIndex: Int, val itemIndex: Int) : ImagesEvent()
 

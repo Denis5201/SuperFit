@@ -72,7 +72,6 @@ class ImagesViewModel @Inject constructor(
         viewModelScope.launch {
             getAllUserPhotoUseCase().collect { result ->
                 result.onSuccess { list ->
-
                     val sections = splitUserPhotoBytesByDateUseCase(list)
                     if (sections.isNotEmpty()) {
                         sections.forEach {
