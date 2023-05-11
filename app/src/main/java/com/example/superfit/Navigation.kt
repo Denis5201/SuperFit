@@ -16,6 +16,7 @@ import com.example.superfit.presentation.body.BodyViewModel
 import com.example.superfit.presentation.graphics.ProgressScreen
 import com.example.superfit.presentation.graphics.StatisticsScreen
 import com.example.superfit.presentation.images.ImagesScreen
+import com.example.superfit.presentation.images.ImagesViewModel
 import com.example.superfit.presentation.main.MainScreen
 import com.example.superfit.presentation.main.MainViewModel
 import com.example.superfit.presentation.training.TrainingScreen
@@ -58,7 +59,8 @@ fun Navigation() {
             StatisticsScreen(navController)
         }
         composable(Screen.ImagesScreen.route) {
-            ImagesScreen(navController)
+            val viewModel = hiltViewModel<ImagesViewModel>()
+            ImagesScreen(navController, viewModel)
         }
     }
 }
