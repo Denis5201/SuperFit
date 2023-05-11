@@ -1,8 +1,8 @@
 package com.example.superfit.presentation.body.ui
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -141,17 +141,27 @@ fun UserPhotoProgress(
         contract = ActivityResultContracts.GetContent()
     ) {
         if (it != null) {
-            val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, it)
-            getEvent(BodyEvent.NewPhoto(bitmap))
+            val bitmap = context.contentResolver.openInputStream(it)?.use { stream ->
+                BitmapFactory.decodeStream(stream)
+            }
+            val normalizedBitmap = context.contentResolver.openInputStream(it)?.use { stream ->
+                val exif = ExifInterface(stream)
+                normalizeRotationImage(bitmap!!, exif)
+            }
+
+            val scaledBitmap = scalingGalleryBitmap(normalizedBitmap!!)
+            getEvent(BodyEvent.NewPhoto(scaledBitmap))
         }
     }
     val getCameraImage = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
     ) {
         if (it) {
-            val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uiState.uri)
+            val filePath = "${context.cacheDir.absolutePath}/${uiState.uri.pathSegments.last()}"
 
-            val file = File("${context.cacheDir.absolutePath}/${uiState.uri.pathSegments.last()}")
+            val file = File(filePath)
+
+            val bitmap = decodeFileToBitmap(filePath)
             val exif = ExifInterface(file)
             val adjustedBitmap = normalizeRotationImage(bitmap, exif)
 
@@ -180,13 +190,33 @@ fun UserPhotoProgress(
 
 }
 
+private fun decodeFileToBitmap(filePath: String): Bitmap {
+    val option = BitmapFactory.Options()
+    option.inJustDecodeBounds = true
+
+    BitmapFactory.decodeFile(filePath, option)
+    val height = option.outHeight
+    val width = option.outWidth
+
+    option.inJustDecodeBounds = false
+    var scale = 1
+    while (height / scale > 1000 || width / scale > 1000) {
+        scale *= 2
+    }
+    option.inSampleSize = scale
+
+    return BitmapFactory.decodeFile(filePath, option)
+}
+
 private fun normalizeRotationImage(image: Bitmap, exif: ExifInterface): Bitmap {
     val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
     val rotationInDegrees = exifToDegrees(rotation)
+
     val matrix = Matrix()
     if (rotation != 0) {
         matrix.preRotate(rotationInDegrees.toFloat())
     }
+
     return Bitmap.createBitmap(image, 0, 0, image.width, image.height, matrix, true)
 }
 
@@ -196,5 +226,16 @@ private fun exifToDegrees(exifOrientation: Int): Int {
         ExifInterface.ORIENTATION_ROTATE_180 -> 180
         ExifInterface.ORIENTATION_ROTATE_270 -> 270
         else -> 0
+    }
+}
+
+fun scalingGalleryBitmap(image: Bitmap): Bitmap {
+    val oldWidth = image.width
+    val oldHeight = image.height
+    return if (oldWidth < 1000 || oldHeight < 1000) {
+        image
+    } else {
+        val scale = maxOf(oldWidth, oldHeight) / 1000 + 1
+        Bitmap.createScaledBitmap(image, oldWidth / scale, oldHeight / scale, true)
     }
 }
