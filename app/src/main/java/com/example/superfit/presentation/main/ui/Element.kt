@@ -39,6 +39,9 @@ fun ExerciseCard(
     getEvent: (MainEvent) -> Unit
 ) {
     val imageId = getExerciseImageId(type)
+    val titleId = getExerciseTitle(type)
+    val descId = getExerciseDescription(type)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -77,14 +80,14 @@ fun ExerciseCard(
         ) {
             Spacer(modifier = Modifier.padding(4.dp))
             Text(
-                text = type.title,
+                text = stringResource(titleId),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onPrimary
             )
 
             Spacer(modifier = Modifier.padding(2.dp))
             Text(
-                text = stringResource(getExerciseDescription(type)), 
+                text = stringResource(descId),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.secondary
             )
@@ -202,6 +205,15 @@ fun getExerciseImageId(type: TrainingType): Int {
         TrainingType.PUSH_UP -> R.drawable.push_ups
         TrainingType.PLANK -> R.drawable.plank
         TrainingType.RUNNING -> R.drawable.running
+    }
+}
+fun getExerciseTitle(type: TrainingType): Int {
+    return when(type) {
+        TrainingType.CRUNCH -> R.string.crunch
+        TrainingType.SQUATS -> R.string.squats
+        TrainingType.PUSH_UP -> R.string.push_ups
+        TrainingType.PLANK -> R.string.plank
+        TrainingType.RUNNING -> R.string.running
     }
 }
 fun getExerciseDescription(type: TrainingType): Int {

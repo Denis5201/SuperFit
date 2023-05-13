@@ -28,7 +28,9 @@ class ParametersRepositoryImpl @Inject constructor(
 
     override fun getLastUserParams(): Flow<Result<UserParameters?>> = flow {
         try {
-            val userParameters = api.paramsHistory().lastOrNull()?.toUserParameters()
+            val userParameters = api.paramsHistory()
+                .map { it.toUserParameters() }
+                .maxByOrNull { it.date }
 
             emit(Result.success(userParameters))
         } catch (e: Exception) {
@@ -39,7 +41,9 @@ class ParametersRepositoryImpl @Inject constructor(
 
     override fun getUserParamsHistory(): Flow<Result<List<UserParameters>>> = flow {
         try {
-             val userParamsList = api.paramsHistory().map { it.toUserParameters() }
+             val userParamsList = api.paramsHistory()
+                 .map { it.toUserParameters() }
+                 .sortedBy { it.date }
 
             emit(Result.success(userParamsList))
         } catch (e: Exception) {

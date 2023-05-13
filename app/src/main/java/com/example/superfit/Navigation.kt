@@ -14,12 +14,15 @@ import com.example.superfit.presentation.auth.SignUpViewModel
 import com.example.superfit.presentation.body.BodyScreen
 import com.example.superfit.presentation.body.BodyViewModel
 import com.example.superfit.presentation.graphics.ProgressScreen
+import com.example.superfit.presentation.graphics.ProgressViewModel
 import com.example.superfit.presentation.graphics.StatisticsScreen
+import com.example.superfit.presentation.graphics.StatisticsViewModel
 import com.example.superfit.presentation.images.ImagesScreen
 import com.example.superfit.presentation.images.ImagesViewModel
 import com.example.superfit.presentation.main.MainScreen
 import com.example.superfit.presentation.main.MainViewModel
 import com.example.superfit.presentation.training.TrainingScreen
+import com.example.superfit.presentation.training.TrainingViewModel
 
 @Composable
 fun Navigation() {
@@ -49,14 +52,22 @@ fun Navigation() {
             val viewModel = hiltViewModel<BodyViewModel>()
             BodyScreen(navController, viewModel)
         }
-        composable(Screen.TrainingScreen.route) {
-            TrainingScreen(navController)
+        composable(
+            route = "${Screen.TrainingScreen.route}/{${Constants.TRAINING}}",
+            arguments = listOf(
+                navArgument(Constants.TRAINING) { type = NavType.StringType }
+            )
+        ) {
+            val viewModel = hiltViewModel<TrainingViewModel>()
+            TrainingScreen(navController, viewModel)
         }
         composable(Screen.ProgressScreen.route) {
-            ProgressScreen(navController)
+            val viewModel = hiltViewModel<ProgressViewModel>()
+            ProgressScreen(navController, viewModel)
         }
         composable(Screen.StatisticsScreen.route) {
-            StatisticsScreen(navController)
+            val viewModel = hiltViewModel<StatisticsViewModel>()
+            StatisticsScreen(navController, viewModel)
         }
         composable(Screen.ImagesScreen.route) {
             val viewModel = hiltViewModel<ImagesViewModel>()

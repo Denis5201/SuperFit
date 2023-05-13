@@ -33,8 +33,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.exifinterface.media.ExifInterface
+import com.example.superfit.Constants
 import com.example.superfit.R
-import com.example.superfit.presentation.body.BodyViewModel
 import com.example.superfit.presentation.body.models.BodyEvent
 import com.example.superfit.presentation.body.models.BodyUiState
 import java.io.File
@@ -83,7 +83,7 @@ fun UserPhotoProgress(
                     contentScale = ContentScale.FillWidth
                 )
                 Text(
-                    text = uiState.userPhotoProgress.first!!.date.format(BodyViewModel.DATE_FORMAT),
+                    text = uiState.userPhotoProgress.first!!.date.format(Constants.DATE_FORMAT),
                     modifier = Modifier
                         .padding(start = 8.dp, bottom = 8.dp)
                         .height(24.dp)
@@ -111,7 +111,7 @@ fun UserPhotoProgress(
                     contentScale = ContentScale.FillWidth
                 )
                 Text(
-                    text = uiState.userPhotoProgress.second!!.date.format(BodyViewModel.DATE_FORMAT),
+                    text = uiState.userPhotoProgress.second!!.date.format(Constants.DATE_FORMAT),
                     modifier = Modifier
                         .padding(start = 8.dp, bottom = 4.dp)
                         .height(24.dp)

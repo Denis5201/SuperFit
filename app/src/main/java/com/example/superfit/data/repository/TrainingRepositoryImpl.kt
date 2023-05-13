@@ -17,7 +17,7 @@ class TrainingRepositoryImpl @Inject constructor(
 
     override fun getTrainingList(): Flow<Result<List<Training>>> = flow {
         try {
-            val trainingList = api.getTrainingList().map { it.toTraining() }
+            val trainingList = api.getTrainingList().map { it.toTraining() }.sortedBy { it.date }
 
             emit(Result.success(trainingList))
         } catch (e: Exception) {

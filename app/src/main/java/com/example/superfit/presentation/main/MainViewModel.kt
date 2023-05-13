@@ -56,7 +56,7 @@ class MainViewModel @Inject constructor(
                 _uiState.value = MainUiState.ShowMain(weight, height, lastExercises)
             }
             is MainEvent.NavigateToTraining -> viewModelScope.launch {
-                _action.send(MainAction.NavigateToTraining(""))
+                _action.send(MainAction.NavigateToTraining("/${event.type.name}"))
             }
             MainEvent.ErrorShowed -> viewModelScope.launch {
                 _action.send(null)

@@ -30,9 +30,9 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.example.superfit.Constants
 import com.example.superfit.R
 import com.example.superfit.presentation.UserImage
-import com.example.superfit.presentation.body.BodyViewModel
 import com.example.superfit.presentation.images.models.ImagesEvent
 
 @Composable
@@ -94,7 +94,7 @@ fun ShowImage(
         )
 
         Text(
-            text = image.date.format(BodyViewModel.DATE_FORMAT),
+            text = image.date.format(Constants.DATE_FORMAT),
             modifier = Modifier
                 .padding(start = 16.dp, bottom = 16.dp)
                 .height(24.dp)

@@ -1,5 +1,6 @@
 package com.example.superfit.presentation.images.ui
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -24,11 +25,14 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import com.example.superfit.Constants
 import com.example.superfit.R
 import com.example.superfit.presentation.images.models.ImagesEvent
 import com.example.superfit.presentation.images.models.ImagesUiState
+import java.time.LocalDate
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -56,7 +60,7 @@ fun UserImageList(
             ) {
                 itemsIndexed(uiState.galleryItemList) { i, listImage ->
                     Text(
-                        text = "${listImage.first().date.month}, ${listImage.first().date.year}",
+                        text = getNameDate(listImage.first().date, LocalContext.current),
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
@@ -95,4 +99,11 @@ fun UserImageList(
             DeletePhotoDialog(photoIndexes = uiState.deletingImageIndexes, getEvent = getEvent)
         }
     }
+}
+
+fun getNameDate(date: LocalDate, context: Context): String {
+    val monthStringId = Constants.MONTH_STRING_IDS[date.monthValue - 1]
+    val month = context.resources.getString(monthStringId)
+
+    return "$month, ${date.year}"
 }

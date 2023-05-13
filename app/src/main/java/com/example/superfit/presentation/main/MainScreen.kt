@@ -82,7 +82,7 @@ fun MainScreen(
                 navController.navigate("${Screen.BodyScreen.route}${actionValue.params}")
             }
             is MainAction.NavigateToTraining -> {
-                navController.navigate(Screen.TrainingScreen.route)
+                navController.navigate("${Screen.TrainingScreen.route}${actionValue.params}")
             }
             MainAction.SignOut -> {
                 navController.navigate(Screen.SignInScreen.route) {

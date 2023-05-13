@@ -18,6 +18,11 @@
     <string name="squats_desc">Сonsidered a vital exercise for increasing the strength and size of the lower body.</string>
     <string name="crunch_desc">It involves the entire abs, but primarily it works the rectus abdominis muscle.</string>
     <string name="running_desc">It develops endurance, strengthens the legs and the cardiovascular system.</string>
+    <string name="crunch">Crunch</string>
+    <string name="squats">Squats</string>
+    <string name="push_ups">Push-Ups</string>
+    <string name="plank">Plank</string>
+    <string name="running">Running</string>
     <string name="my_body">My body</string>
     <string name="exercises">Exercises</string>
     <string name="last_exercises">Last exercises</string>
@@ -43,4 +48,17 @@
     <string name="camera">CAMERA</string>
     <string name="delete_this_photo">Do you want to delete this photo?</string>
     <string name="delete">DELETE</string>
+    <string name="training">Training</string>
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
 </resources>

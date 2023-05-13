@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -259,6 +258,5 @@ class BodyViewModel @Inject constructor(
         const val UNDEFINED = "Undefined"
         const val IMAGE_NAME = "temp_photo"
         const val JPEG = ".jpg"
-        val DATE_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
     }
 }
