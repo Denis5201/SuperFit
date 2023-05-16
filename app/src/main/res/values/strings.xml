@@ -61,4 +61,6 @@
     <string name="october">October</string>
     <string name="november">November</string>
     <string name="december">December</string>
+    <string name="one_weight_list_data">More than 1 value is needed to show the graph</string>
+    <string name="one_training">More than 1 training is needed to show the graph</string>
 </resources>

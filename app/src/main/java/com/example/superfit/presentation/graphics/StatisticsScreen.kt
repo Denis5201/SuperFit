@@ -19,6 +19,7 @@ import com.example.superfit.presentation.ErrorDialog
 import com.example.superfit.presentation.graphics.models.StatisticsAction
 import com.example.superfit.presentation.graphics.models.StatisticsEvent
 import com.example.superfit.presentation.graphics.models.StatisticsUiState
+import com.example.superfit.presentation.graphics.ui.Charts
 
 @Composable
 fun StatisticsScreen(
@@ -43,6 +44,9 @@ fun StatisticsScreen(
     when(val state = uiState.value) {
         StatisticsUiState.Loading -> {
             AppProgressBar()
+        }
+        is StatisticsUiState.ShowCharts -> {
+            Charts(state) { viewModel.getEvent(it) }
         }
     }
 
