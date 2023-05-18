@@ -14,10 +14,8 @@ class SplitUserPhotoBytesByDateUseCase @Inject constructor() {
         var i = 0
         while (i < listPhoto.size) {
             val section = mutableListOf<UserPhotoBytes>()
-            if (i == 0) {
-                section.add(listPhoto[0])
-                i += 1
-            }
+            section.add(listPhoto[i])
+            i += 1
             while (i < listPhoto.size && listPhoto[i].date.month == listPhoto[i - 1].date.month &&
                 listPhoto[i].date.year == listPhoto[i - 1].date.year) {
                 section.add(listPhoto[i])

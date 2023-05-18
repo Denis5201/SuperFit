@@ -16,7 +16,7 @@ class CalculateProgressUseCase @Inject constructor() {
         val second = trainingList.lastOrNull { it.exercise == type && it != lastTraining }
             ?: return Pair(lastTraining.repeatCount, null)
 
-        val progress = 100 - lastTraining.repeatCount / second.repeatCount * 100
+        val progress = (lastTraining.repeatCount.toFloat() / second.repeatCount * 100).toInt() - 100
 
         return Pair(lastTraining.repeatCount, progress)
     }
