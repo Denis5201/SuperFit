@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.superfit.domain.model.Training
 import com.example.superfit.domain.model.TrainingType
+import com.example.superfit.domain.usecase.GetAllUserParamsUseCase
+import com.example.superfit.domain.usecase.GetTrainingListUseCase
+import com.example.superfit.presentation.MessageSource
 import com.example.superfit.presentation.graphics.models.StatisticsAction
 import com.example.superfit.presentation.graphics.models.StatisticsEvent
 import com.example.superfit.presentation.graphics.models.StatisticsUiState
@@ -20,7 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
-
+    private val getAllUserParamsUseCase: GetAllUserParamsUseCase,
+    private val getTrainingListUseCase: GetTrainingListUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<StatisticsUiState>(StatisticsUiState.Loading)
@@ -29,12 +33,12 @@ class StatisticsViewModel @Inject constructor(
     private val _action = Channel<StatisticsAction?>()
     val action = _action.receiveAsFlow()
 
-    private val weightList: List<WeightParam> = listOf(WeightParam(50, LocalDate.now()),
+    private var weightList: List<WeightParam> = listOf(WeightParam(50, LocalDate.now()),
         WeightParam(55, LocalDate.now()), WeightParam(57, LocalDate.now()),
         WeightParam(55, LocalDate.now()), WeightParam(60, LocalDate.now()),
         WeightParam(62, LocalDate.now()), WeightParam(65, LocalDate.now()),
         WeightParam(68, LocalDate.now()), WeightParam(69, LocalDate.now()), WeightParam(70, LocalDate.now()))
-    private val allTraining: List<Training> = listOf(Training(LocalDate.now(), TrainingType.PUSH_UP, 10),
+    private var allTraining: List<Training> = listOf(Training(LocalDate.now(), TrainingType.PUSH_UP, 10),
         Training(LocalDate.now(), TrainingType.PUSH_UP, 15), Training(LocalDate.now(), TrainingType.PUSH_UP, 18),
         Training(LocalDate.now(), TrainingType.PUSH_UP, 20), Training(LocalDate.now(), TrainingType.PUSH_UP, 20),
         Training(LocalDate.now(), TrainingType.PUSH_UP, 22), Training(LocalDate.now(), TrainingType.PUSH_UP, 25))
@@ -60,6 +64,42 @@ class StatisticsViewModel @Inject constructor(
             }
             StatisticsEvent.ErrorShowed -> viewModelScope.launch {
                 _action.send(null)
+            }
+        }
+    }
+
+    private fun getWeightList() {
+        viewModelScope.launch {
+            getAllUserParamsUseCase().collect { result ->
+                result.onSuccess {
+
+                }.onFailure {
+                    _action.send(StatisticsAction.ShowError(it.message ?: MessageSource.ERROR))
+                    _uiState.value = StatisticsUiState.ShowCharts(
+                        selectedTrainingType = TrainingType.PUSH_UP,
+                        trainingList = allTraining.filter { training ->
+                            training.exercise == TrainingType.PUSH_UP
+                        }
+                    )
+                }
+            }
+        }
+    }
+
+    private fun getTraining() {
+        viewModelScope.launch {
+            getTrainingListUseCase().collect { result ->
+                result.onSuccess { list ->
+                    allTraining = list
+                    _uiState.value = StatisticsUiState.ShowCharts(
+                        weightData = weightList,
+                        selectedTrainingType = TrainingType.PUSH_UP,
+                        trainingList = allTraining.filter { it.exercise == TrainingType.PUSH_UP }
+                    )
+                }.onFailure {
+                    _action.send(StatisticsAction.ShowError(it.message ?: MessageSource.ERROR))
+                    _uiState.value = StatisticsUiState.ShowCharts(weightList)
+                }
             }
         }
     }

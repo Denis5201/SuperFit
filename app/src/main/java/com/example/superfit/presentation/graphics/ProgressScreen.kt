@@ -19,6 +19,7 @@ import com.example.superfit.presentation.ErrorDialog
 import com.example.superfit.presentation.graphics.models.ProgressAction
 import com.example.superfit.presentation.graphics.models.ProgressEvent
 import com.example.superfit.presentation.graphics.models.ProgressUiState
+import com.example.superfit.presentation.graphics.ui.Progress
 
 @Composable
 fun ProgressScreen(
@@ -43,6 +44,9 @@ fun ProgressScreen(
     when(val state = uiState.value) {
         ProgressUiState.Loading -> {
             AppProgressBar()
+        }
+        is ProgressUiState.ShowProgress -> {
+            Progress(uiState = state) { viewModel.getEvent(it) }
         }
     }
 

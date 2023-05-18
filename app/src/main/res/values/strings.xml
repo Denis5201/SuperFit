@@ -63,4 +63,9 @@
     <string name="december">December</string>
     <string name="one_weight_list_data">More than 1 value is needed to show the graph</string>
     <string name="one_training">More than 1 training is needed to show the graph</string>
+    <string name="last_train">Last train:\u0020</string>
+    <string name="progress">Progress:\u0020</string>
+    <string name="x_times">%1$s times</string>
+    <string name="x_seconds">%1$s seconds</string>
+    <string name="x_meters">%1$s meters</string>
 </resources>
