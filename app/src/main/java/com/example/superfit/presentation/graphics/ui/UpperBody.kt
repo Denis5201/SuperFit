@@ -189,7 +189,7 @@ fun UpperBody(
             }
         }
 
-        Spacer(modifier = Modifier.fillMaxHeight(0.1f))
+        Spacer(modifier = Modifier.fillMaxHeight(0.08f))
 
         Box(
             modifier = Modifier

@@ -120,7 +120,7 @@ fun LowerBody(
 
         }
 
-        Spacer(modifier = Modifier.fillMaxHeight(0.15f))
+        Spacer(modifier = Modifier.fillMaxHeight(0.14f))
 
         Box(
             modifier = Modifier
