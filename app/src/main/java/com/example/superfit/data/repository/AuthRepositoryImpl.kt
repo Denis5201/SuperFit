@@ -26,6 +26,7 @@ class AuthRepositoryImpl @Inject constructor(
             sharedPreferences.setString(SharedPreferences.REFRESH_TOKEN, refreshToken.refreshToken)
             sharedPreferences.setBoolean(SharedPreferences.FIRST_RUN, false)
             sharedPreferences.setString(SharedPreferences.USER_EMAIL, credentials.login)
+            sharedPreferences.setString(SharedPreferences.USER_PASSWORD, credentials.password)
 
             emit(Result.success(Unit))
         } catch (e: Exception) {
@@ -40,6 +41,9 @@ class AuthRepositoryImpl @Inject constructor(
 
             sharedPreferences.setBoolean(SharedPreferences.FIRST_RUN, false)
             sharedPreferences.setString(SharedPreferences.USER_EMAIL, registrationForm.login)
+            sharedPreferences.setString(
+                SharedPreferences.USER_PASSWORD, registrationForm.password.toString()
+            )
 
             emit(Result.success(Unit))
         } catch (e: Exception) {
