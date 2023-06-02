@@ -94,4 +94,8 @@ fun MainScreen(
             else -> { }
         }
     }
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getEvent(MainEvent.RefreshScreen)
+    }
 }

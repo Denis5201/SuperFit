@@ -37,13 +37,17 @@ class MainViewModel @Inject constructor(
     private var height: String? = null
     private var lastExercises: Pair<TrainingType?, TrainingType?> = Pair(null, null)
 
-    init {
+    /*init {
         getLastUserParams()
         getLastExercises()
-    }
+    }*/
 
     fun getEvent(event: MainEvent) {
         when(event) {
+            MainEvent.RefreshScreen -> {
+                getLastUserParams()
+                getLastExercises()
+            }
             MainEvent.NavigateToBody -> viewModelScope.launch {
                 val weightParam = weight ?: UNDEFINED
                 val heightParam = height ?: UNDEFINED

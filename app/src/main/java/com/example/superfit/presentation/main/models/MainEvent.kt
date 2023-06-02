@@ -15,4 +15,6 @@ sealed class MainEvent {
     object SignOut : MainEvent()
 
     object ErrorShowed : MainEvent()
+
+    object RefreshScreen : MainEvent()
 }

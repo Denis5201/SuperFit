@@ -104,6 +104,28 @@ fun Exercise(
         }
     }
 
+    when (uiState.type) {
+        TrainingType.SQUATS -> {
+            if (uiState.count == 0) {
+                getEvent(TrainingEvent.ShowSuccess)
+            }
+            LinearSensor(1, getEvent)
+        }
+        TrainingType.PUSH_UP -> {
+            if (uiState.count == 0) {
+                getEvent(TrainingEvent.ShowSuccess)
+            }
+            LinearSensor(2, getEvent)
+        }
+        TrainingType.RUNNING -> {
+            if (uiState.count == 0) {
+                getEvent(TrainingEvent.ShowSuccess)
+            }
+            StepSensor(getEvent)
+        }
+        else -> {}
+    }
+
     if (uiState.type == TrainingType.PLANK) {
         if (uiState.isDialogOpen) {
             StartTrainingDialog(count = uiState.count, getEvent = getEvent)

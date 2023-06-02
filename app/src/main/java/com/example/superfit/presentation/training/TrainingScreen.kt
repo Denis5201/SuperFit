@@ -48,7 +48,6 @@ fun TrainingScreen(
         )
     }
 
-
     when(val state = uiState.value) {
         TrainingUiState.Loading -> {
             AppProgressBar()

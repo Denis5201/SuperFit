@@ -34,6 +34,10 @@ fun BarChart(
     modifier: Modifier
 ) {
 
+    var trainingListState by remember {
+        mutableStateOf(emptyList<Training>())
+    }
+    trainingListState = trainingList
     val rectColor = MaterialTheme.colorScheme.primary
     val visibleCount = 5
     var scrollOffset by remember { mutableStateOf(0f) }
@@ -50,11 +54,11 @@ fun BarChart(
 
         val visibleTraining by remember {
             derivedStateOf {
-                trainingList.subList(
+                trainingListState.subList(
                     fromIndex = scrollOffset.roundToInt()
-                        .coerceIn(0, maxOf(trainingList.size - visibleCount, 0)),
+                        .coerceIn(0, maxOf(trainingListState.size - visibleCount, 0)),
                     toIndex = (scrollOffset.roundToInt() + visibleCount)
-                        .coerceAtMost(trainingList.size)
+                        .coerceAtMost(trainingListState.size)
                 )
             }
         }
@@ -97,7 +101,7 @@ fun BarChart(
 
             for (i in 1..3) {
                 drawContext.canvas.nativeCanvas.drawText(
-                    "${maxValue / 4 * i}",
+                    "${(maxValue / 4f * i).roundToInt()}",
                     0f, (size.height - offset ) / 4 * (4 - i), Paint().apply {
                         textSize = 10.sp.toPx()
                         color = Color.White.toArgb()

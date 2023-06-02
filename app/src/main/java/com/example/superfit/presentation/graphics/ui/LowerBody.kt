@@ -13,6 +13,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -90,7 +91,7 @@ fun LowerBody(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
                 Spacer(modifier = Modifier.padding(2.dp))
-                Row {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = buildAnnotatedString {
                             append(stringResource(R.string.progress))
@@ -106,6 +107,7 @@ fun LowerBody(
                     )
                     uiState.squats.second?.let {
                         if (it == 0) return@let
+                        Spacer(modifier = Modifier.padding(start = 4.dp))
                         Icon(
                             imageVector = ImageVector.vectorResource(
                                 id = if (it > 0) R.drawable.arrow_up else R.drawable.arrow_down
@@ -159,7 +161,7 @@ fun LowerBody(
                         append(stringResource(R.string.last_train))
                         withStyle(SpanStyle(fontWeight = FontWeight.W700)) {
                             val string = uiState.running.first?.let {
-                                stringResource(R.string.x_times, it)
+                                stringResource(R.string.x_meters, it)
                             } ?: undefinedText
                             append(string)
                         }
@@ -168,7 +170,7 @@ fun LowerBody(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
                 Spacer(modifier = Modifier.padding(2.dp))
-                Row {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = buildAnnotatedString {
                             append(stringResource(R.string.progress))
@@ -184,6 +186,7 @@ fun LowerBody(
                     )
                     uiState.running.second?.let {
                         if (it == 0) return@let
+                        Spacer(modifier = Modifier.padding(start = 4.dp))
                         Icon(
                             imageVector = ImageVector.vectorResource(
                                 id = if (it > 0) R.drawable.arrow_up else R.drawable.arrow_down

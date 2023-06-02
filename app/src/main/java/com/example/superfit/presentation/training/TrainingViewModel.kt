@@ -56,7 +56,8 @@ class TrainingViewModel @Inject constructor(
             is TrainingEvent.DecreaseCount -> {
                 if (_uiState.value is TrainingUiState.Training) {
                     _uiState.value = (_uiState.value as TrainingUiState.Training).copy(
-                        count = (_uiState.value as TrainingUiState.Training).count - event.decrease
+                        count = ((_uiState.value as TrainingUiState.Training).count - event.decrease)
+                            .coerceAtLeast(0)
                     )
                     if (type == TrainingType.PLANK) {
                         _uiState.value = (_uiState.value as TrainingUiState.Training).copy(
@@ -68,14 +69,14 @@ class TrainingViewModel @Inject constructor(
 
             }
             TrainingEvent.SaveSuccessAndBack -> {
-                //saveTraining(trainingPurpose, true)
+                saveTraining(trainingPurpose, true)
             }
             TrainingEvent.ShowSuccess -> {
-                //saveTraining(trainingPurpose)
+                saveTraining(trainingPurpose)
                 _uiState.value = TrainingUiState.TrainingSuccess
             }
             is TrainingEvent.ShowUnSuccess -> {
-                //saveTraining(trainingPurpose - event.countRemains)
+                saveTraining(trainingPurpose - event.countRemains)
                 _uiState.value = TrainingUiState.TrainingUnSuccess(type, event.countRemains)
             }
             TrainingEvent.BackToMainScreen -> viewModelScope.launch {

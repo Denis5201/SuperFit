@@ -43,7 +43,7 @@ fun BodyParams(
         smallHeight = true
         stringResource(R.string.undefined)
     } else {
-        stringResource(R.string.weight_value, uiState.height)
+        stringResource(R.string.height_value, uiState.height)
     }
 
     Row(
